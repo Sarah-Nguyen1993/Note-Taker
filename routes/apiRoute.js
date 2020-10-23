@@ -8,7 +8,7 @@ module.exports = function(app){
    
     app.post("/api/notes", function(req,res){
         let newNote = req.body;
-        let uniqueId = savedNotes.length;
+        let uniqueId = savedNotes.length -1;
         newNote.id = uniqueId;
         savedNotes.push(newNote)
         fs.writeFile("./db/db.json", JSON.stringify(savedNotes),function(err) {
