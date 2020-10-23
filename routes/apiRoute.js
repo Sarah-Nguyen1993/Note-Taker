@@ -3,14 +3,12 @@ const fs = require("fs");
 
 module.exports = function(app){
     app.get("/api/notes", function(req,res){
-        res.json(savedNotes)
+      return res.json(savedNotes)
     });
-   
     app.post("/api/notes", function(req,res){
         let newNote = req.body;
-        let uniqueId = savedNotes.length -1;
-        newNote.id = uniqueId;
-        savedNotes.push(newNote)
+        savedNotes.push(newNote);
+        assignID();
         fs.writeFile("./db/db.json", JSON.stringify(savedNotes),function(err) {
             if (err) throw err;
         });
@@ -19,14 +17,21 @@ module.exports = function(app){
     }); 
 
     app.delete("/api/notes/:id", function(req,res){
-        console.log(req.params.id)
-        const deletedNote = savedNotes.splice(req.params.id,1);
-        console.log(savedNotes);
-        fs.writeFile("./db/db.json", JSON.stringify(savedNotes),function(err) {
-            if (err) throw err;
+       const deletedID = req.params.id;
+       console.log(deletedID);
+       const deletedNote = savedNotes.splice(deletedID,1);
+       console.log(savedNotes);
+       assignID();
+       fs.writeFile("./db/db.json", JSON.stringify(savedNotes), function (err) {
+        if (err)  throw err
         });
         res.json(savedNotes);
         })
         
-        
+    
+    function assignID() {
+        for (i = 0; i < savedNotes.length; i ++) {
+            savedNotes[i].id = i;
+        }
+    }       
 }
