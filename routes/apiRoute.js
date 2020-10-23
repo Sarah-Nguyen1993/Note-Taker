@@ -20,7 +20,7 @@ module.exports = function(app){
 
     app.delete("/api/notes/:id", function(req,res){
         console.log(req.params.id)
-        const deletedNote = savedNotes.splice(req.params.id-1,1);
+        const deletedNote = savedNotes.splice(req.params.id,1);
         console.log(savedNotes);
         fs.writeFile("./db/db.json", JSON.stringify(savedNotes),function(err) {
             if (err) throw err;
