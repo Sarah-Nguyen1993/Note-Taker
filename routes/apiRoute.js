@@ -17,17 +17,16 @@ module.exports = function (app) {
             if (err) throw err;
         });
         res.json(savedNotes);
-        console.log(savedNotes);
     });
 
     app.delete("/api/notes/:id", function (req, res) {
         const deletedID = req.params.id;
         console.log(deletedID);
-        savedNotes.splice(deletedID, 1);
-        console.log(savedNotes);
-        fs.writeFile("./db/db.json", JSON.stringify(savedNotes), function (err) {
+        const remainingNotes = savedNotes.filter(note => note.id !== deletedID)
+        console.log(remainingNotes);
+        fs.writeFile("./db/db.json", JSON.stringify(remainingNotes), function (err) {
             if (err) throw err
         });
-        res.json(savedNotes);
+        res.json(remainingNotes)
     })     
 }
