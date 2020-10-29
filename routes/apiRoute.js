@@ -24,9 +24,10 @@ module.exports = function (app) {
         console.log(deletedID);
         const remainingNotes = savedNotes.filter(note => note.id !== deletedID)
         console.log(remainingNotes);
-        fs.writeFile("./db/db.json", JSON.stringify(remainingNotes), function (err) {
+        savedNotes = remainingNotes;
+        fs.writeFile("./db/db.json", JSON.stringify(savedNotes), function (err) {
             if (err) throw err
         });
-        res.json(remainingNotes)
+        res.json(savedNotes)
     })     
 }
